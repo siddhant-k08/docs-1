@@ -964,6 +964,15 @@ components:
 paths:
   '/positions/{address}':
     get:
+      summary: Get Positions
+      description: >-
+        Returns the DeFi positions of a Solana wallet across the supported platforms:
+        wallet balances, staked JUP, limit orders, DCA, liquidity pools and leveraged
+        trades. Each entry in `elements` carries a `type`, a human-readable `label`, the
+        `platformId` it belongs to, its USD `value` and type-specific `data`. `tokenInfo`
+        holds token metadata indexed by address and `fetcherReports` reports the status of
+        each platform queried. Filter with the `platforms` query parameter using ids from
+        `/platforms`. Only Jupiter platforms are supported currently.
       parameters:
         - schema:
             type: string
@@ -1033,6 +1042,11 @@ paths:
 
   /platforms:
     get:
+      summary: Get Platforms
+      description: >-
+        Lists the platforms the Portfolio API indexes, each with its `id`, `name`, `image`,
+        `description`, `tags`, `links` and `isDeprecated` flag. Use the `id` values in the
+        `platforms` query parameter of `/positions/{address}` to filter positions.
       responses:
         '200':
           description: Default Response
@@ -1089,12 +1103,18 @@ paths:
                   isDeprecated: false
   '/staked-jup/{address}':
     get:
+      summary: Get Staked JUP
+      description: >-
+        Returns the JUP staking state of a Solana wallet: `stakedAmount` currently staked
+        and the `unstaking` entries in progress, each with an `amount` and the `until`
+        Unix timestamp when its unstaking period ends.
       parameters:
         - schema:
             type: string
           in: path
           name: address
           required: true
+          description: Solana wallet address
       responses:
         '200':
           description: Default Response
